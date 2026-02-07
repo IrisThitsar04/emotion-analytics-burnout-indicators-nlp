@@ -1,4 +1,4 @@
-# Emotion-Aware Burnout Indicator
+# Emotion Analytics Burnout Indicators NLP
 
 ## Project Overview
 
