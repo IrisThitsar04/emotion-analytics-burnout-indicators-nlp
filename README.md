@@ -27,26 +27,19 @@ The prototype allows users to enter free text and returns:
 The project follows an end-to-end NLP pipeline:
 
 <p align="center">
-  <img src="images/framework_overview.png" alt="Framework Overview" width="850">
+  <img src="images/Framework_overview.png" alt="Framework Overview" width="950">
 </p>
 
-1. Emotion Detection
-Fine-grained emotions are predicted from text using multi-label classification.
+1. **Text Input** : User-submitted text is provided to the system.
 
-2. Valence-Arousal Categorisation
-Predicted emotions are grouped into five affective categories:
-- Pleasant-Active
-- Pleasant-Deactive
-- Unpleasant-Active
-- Unpleasant-Deactive
-- Neutral-Ambiguous
+2. **Emotion Detection** : The selected BERT model predicts fine-grained emotion labels from the input text.
 
-3. Burnout Indicator Mapping
-The affective categories are mapped to conceptual burnout-related indicators.
+3. **Valence-Arousal Aggregation** : Predicted emotions are grouped into broader affective categories.
 
-4. Rule-Based Decision Logic
-If multiple categories are detected, a priority-based rule system assigns the final indicator.
+4. **Burnout Indicator Mapping** : The affective categories are mapped to conceptual burnout-related indicator groups.
 
+5. **Rule-Based Decision Logic** : A priority-based rule system assigns the final non-diagnostic burnout-related indicator.
+     
 ---
 
 ## Dataset
