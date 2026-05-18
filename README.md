@@ -12,7 +12,7 @@ The system is designed for academic and technical demonstration only. It does **
 
 ## Prototype Preview
 
-![Prototype Preview](images/prototype_preview.png)
+![Prototype Preview](images/Prototype_preview.png)
 
 The prototype allows users to enter free text and returns:
 
@@ -26,25 +26,10 @@ The prototype allows users to enter free text and returns:
 
 The project follows an end-to-end NLP pipeline:
 
-```text
-Raw GoEmotions Dataset
-        ↓
-Exploratory Data Analysis
-        ↓
-Text Cleaning and Preprocessing
-        ↓
-Baseline Model Training
-        ↓
-Transformer Fine-Tuning
-        ↓
-Emotion-Level Prediction
-        ↓
-Valence-Arousal Quadrant Aggregation
-        ↓
-Rule-Based Burnout Indicator Mapping
-        ↓
-Streamlit Prototype
-```
+<p align="center">
+  <img src="images/framework_overview.png" alt="Framework Overview" width="850">
+</p>
+
 1. Emotion Detection
 Fine-grained emotions are predicted from text using multi-label classification.
 
@@ -110,14 +95,27 @@ When multiple affective categories are detected, a rule-based hierarchical decis
 
 ## Key Results
 
-After aggregating emotion-level predictions into affective quadrants, the selected BERT model achieved the following test performance:
+BERT and RoBERTa achieved comparable emotion-level performance, with BERT selected as the final model because model selection was based on validation macro-F1.
 
-| Metric   | Test Score |
-| -------- | ---------: |
-| Micro-F1 |       0.74 |
-| Macro-F1 |       0.71 |
+### Emotion-Level Performance
 
-The results show that quadrant-level aggregation improves performance compared with fine-grained emotion-level prediction, mainly because it reduces the complexity caused by rare and overlapping emotion labels.
+| Model | Micro-F1 (Test) | Macro-F1 (Test) |
+|---|---:|---:|
+| Logistic Regression | 0.53 | 0.46 |
+| LinearSVC | 0.49 | 0.41 |
+| BERT | 0.60 | 0.53 |
+| RoBERTa | 0.61 | 0.54 |
+
+### Final Quadrant-Level Performance
+
+After aggregating BERT emotion-level predictions into affective quadrants, the selected model achieved:
+
+| Metric | Test Score |
+|---|---:|
+| Micro-F1 | 0.74 |
+| Macro-F1 | 0.71 |
+
+The results show that quadrant-level aggregation improved performance compared with fine-grained emotion-level prediction, mainly because it reduced the complexity caused by rare and overlapping emotion labels.
 
 ---
 
@@ -146,19 +144,6 @@ The prototype workflow is:
   <img src="images/prototype_workflow.png" alt="Prototype Workflow" width="250">
 </p>
 
-```text
-User Text Input
-        ↓
-Transformer Emotion Prediction
-        ↓
-Emotion Probability Scores
-        ↓
-Quadrant Aggregation
-        ↓
-Rule-Based Indicator Assignment
-        ↓
-Prototype Output
-```
 ---
 
 ## Execution Environment
