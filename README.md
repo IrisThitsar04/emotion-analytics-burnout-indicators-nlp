@@ -12,8 +12,7 @@ The system is designed for academic and technical demonstration only. It does **
 
 ## Prototype Preview
 
-![Prototype Preview](images/prototype_preview1.png)
-![Prototype Preview](images/prototype_preview2.png)
+![Prototype Preview](images/prototype_preview.png)
 
 The prototype allows users to enter free text and returns:
 
@@ -143,7 +142,9 @@ The prototype includes:
 - `best_emo_model/` — generated after running the transformer training notebook
   
 The prototype workflow is:
-![Prototype Workflow](images/prototype_workflow.png)
+<p align="center">
+  <img src="images/prototype_workflow.png" alt="Prototype Workflow" width="250">
+</p>
 
 ```text
 User Text Input
