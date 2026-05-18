@@ -2,35 +2,162 @@
 
 ## Project Overview
 
-This repository presents an applied research project on emotion-informed burnout indicator modelling. The project primarily focuses on transformer-based natural language processing models, with baseline models included for comparative reference, and the overall approach is grounded in a literature-informed interpretive framework.
+This project develops an emotion-aware NLP framework for identifying **non-diagnostic burnout-related indicators** from text. The system uses transformer-based multi-label emotion classification and maps predicted emotions into broader affective categories using a literature-informed valence-arousal framework.
 
-The project includes exploratory data analysis, data preprocessing, baseline modelling, transformer-based experimentation, and evaluation using the publicly available **GoEmotions dataset**.
+The project is based on the **GoEmotions dataset** and includes exploratory data analysis, preprocessing, baseline modelling, transformer fine-tuning, quadrant-level emotion aggregation, burnout indicator mapping, and a lightweight Streamlit prototype.
 
-A lightweight web-based prototype is also developed to demonstrate the integration of the trained emotion classification model with a literature-informed affective mapping framework.
+The system is designed for academic and technical demonstration only. It does **not** diagnose burnout or mental health conditions.
 
 ---
 
-## Quick Start
+## Prototype Preview
 
-1. Upload the `applied_research_project/` folder to Google Drive (under **MyDrive**).
-2. Open `01_eda_data_cleaning.ipynb` in Google Colab.
-3. Mount Google Drive using:
-   ```python
-   from google.colab import drive
-   drive.mount('/content/drive')
-   ```
-4. Run notebooks sequentially as documented in the **Notebook Execution Order** section.
+![Prototype Preview](images/prototype_preview1.png)
+![Prototype Preview](images/prototype_preview2.png)
+
+The prototype allows users to enter free text and returns:
+
+- A burnout-related indicator
+- Quadrant-level probability scores
+- Top predicted emotions ranked by confidence
+
+---
+
+## Project Pipeline
+
+The project follows an end-to-end NLP pipeline:
+
+```text
+Raw GoEmotions Dataset
+        ↓
+Exploratory Data Analysis
+        ↓
+Text Cleaning and Preprocessing
+        ↓
+Baseline Model Training
+        ↓
+Transformer Fine-Tuning
+        ↓
+Emotion-Level Prediction
+        ↓
+Valence-Arousal Quadrant Aggregation
+        ↓
+Rule-Based Burnout Indicator Mapping
+        ↓
+Streamlit Prototype
+```
+1. Emotion Detection
+Fine-grained emotions are predicted from text using multi-label classification.
+
+2. Valence-Arousal Categorisation
+Predicted emotions are grouped into five affective categories:
+- Pleasant-Active
+- Pleasant-Deactive
+- Unpleasant-Active
+- Unpleasant-Deactive
+- Neutral-Ambiguous
+
+3. Burnout Indicator Mapping
+The affective categories are mapped to conceptual burnout-related indicators.
+
+4. Rule-Based Decision Logic
+If multiple categories are detected, a priority-based rule system assigns the final indicator.
 
 ---
 
 ## Dataset
 
-This project uses the **GoEmotions** dataset, a publicly available, human-annotated emotion dataset released by Google Research. It contains textual data labelled with fine-grained emotions and is widely used in emotion classification research.
+This project uses the **GoEmotions** dataset, a publicly available emotion classification dataset released by Google Research.
 
 The dataset was obtained from the official Google Research repository and includes predefined training, validation, and test splits, which were used as provided.
 
 Raw textual data is not included due to licensing constraints. Preprocessed data are provided under the `data/` directory.
 
+---
+
+## Modelling Approach
+
+The project compares baseline machine learning models with transformer-based models.
+
+### Baseline Models
+- Logistic Regression
+- LinearSVC
+
+### Transformer Models
+- BERT-base-uncased
+- RoBERTa-base
+
+BERT and RoBERTa produced comparable performance, with only small differences across micro-F1 and macro-F1 scores. BERT was selected as the final model because model selection was based on validation macro-F1, where BERT achieved the strongest result.
+
+---
+
+## Burnout Indicator Mapping
+
+The model does not directly predict burnout. Instead, it predicts emotions, aggregates them into affective quadrants, and maps those quadrants to burnout-related indicators.
+
+The mapping follows this general logic:
+
+| Affective Category  | Interpretation                       |
+| ------------------- | ------------------------------------ |
+| Pleasant-Active     | Indicators of engagement             |
+| Pleasant-Deactive   | Indicators of satisfaction           |
+| Unpleasant-Active   | Signs of moderate burnout indicators |
+| Unpleasant-Deactive | Signs of advanced burnout indicators |
+| Neutral-Ambiguous   | Ambiguous burnout indicator          |
+
+When multiple affective categories are detected, a rule-based hierarchical decision logic is applied to assign the final indicator, prioritising categories associated with higher burnout-related severity. This mapping is interpretive and non-diagnostic.
+
+---
+
+## Key Results
+
+After aggregating emotion-level predictions into affective quadrants, the selected BERT model achieved the following test performance:
+
+| Metric   | Test Score |
+| -------- | ---------: |
+| Micro-F1 |       0.74 |
+| Macro-F1 |       0.71 |
+
+The results show that quadrant-level aggregation improves performance compared with fine-grained emotion-level prediction, mainly because it reduces the complexity caused by rare and overlapping emotion labels.
+
+---
+
+## Interpretability and Error Analysis
+
+Model interpretability was examined using **SHAP** and **LIME** to identify which words most influenced selected BERT emotion predictions. The analysis showed that the model often relied on explicit emotional cues, while some errors were linked to ambiguous wording or overlapping emotion meanings.
+
+Misclassified samples were also reviewed to understand common failure patterns, including overlapping emotion meanings, rare emotion labels, neutral-label bias, and cases where the model predicted only part of a multi-label emotion target.
+
+![SHAP and LIME Interpretability Analysis](images/interpretability_analysis.png)
+
+---
+
+## Prototype
+
+A lightweight Streamlit prototype was developed to demonstrate the complete inference workflow.
+
+The prototype includes:
+
+- `app.py` — Streamlit user interface
+- `inference.py` — model loading, prediction, aggregation, and indicator assignment
+- `best_emo_model/` — generated after running the transformer training notebook
+  
+The prototype workflow is:
+![Prototype Workflow](images/prototype_workflow.png)
+
+```text
+User Text Input
+        ↓
+Transformer Emotion Prediction
+        ↓
+Emotion Probability Scores
+        ↓
+Quadrant Aggregation
+        ↓
+Rule-Based Indicator Assignment
+        ↓
+Prototype Output
+```
 ---
 
 ## Execution Environment
@@ -131,6 +258,21 @@ The notebooks are intended to be run in the following order:
 
 After running the core notebooks, the supplementary notebooks can be executed in any order.
 
+---
+
+## Tools and Technologies
+
+- Python
+- pandas
+- NumPy
+- scikit-learn
+- PyTorch
+- Hugging Face Transformers
+- SHAP
+- LIME
+- Streamlit
+- Google Colab Pro
+  
 ---
 
 ## Runtime Considerations
